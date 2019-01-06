@@ -3,15 +3,28 @@
 This program calculate the distance between two astro
     object in degrees.
 
-    object position in spherical coordinates.
+    object position in astro-spherical coordinates.
         e.x. a pair of R.A.(Right Ascension) & Decl.(Declination)
     R.A. == sign(R.A.), h(hour), m(minutes), s(second)
     Decl.== sign(Decl.), d(degree), m(arc-minute), s(arc-second)
-    object1 : R.A. & Decl.
-    object2 : R.A.& Decl.
+    AstroObjectCoordinate == name, RA, DECL
+
+    func. arc_distance(AstroObject1, AstroObject2)
+        AstroObject1 : name, R.A. & Decl.
+        AstroObject2 : name, R.A.& Decl.
 
     result: distance in arc-degrees between two astro objects.
-            and Spherical astronomy position angle
+            and Spherical astronomy position angle(polar angle).
+
+    Ver-0.02:
+        modify class RA, DECL data structure
+        add    class AstroObjectCoordinate
+        Add    func.arc_distance()
+        correct star name spels.
+    Ver-0.01:
+        Initial implementation to calculate arc_distance and polar angular between
+            Betelgeuse and Sirius.
+
 
 """
 
@@ -113,23 +126,23 @@ def arc_distance(Star1, Star2):
 
 if __name__ == '__main__':
 
-    betelguse_ra = RA(+5, 52, 30)
-    betelguse_decl = DECL(+7, 24, 00)
+    betelgeuse_ra = RA(+5, 52, 30)
+    betelgeuse_decl = DECL(+7, 24, 00)
  
     sirius_ra = RA(+6, 42, 54)
     sirius_decl = DECL(-16, 39, 00)
 
-    betel_cos_decl = np.cos(betelguse_decl.rad)
-    betel_sin_decl = np.sin(betelguse_decl.rad)
+    betel_cos_decl = np.cos(betelgeuse_decl.rad)
+    betel_sin_decl = np.sin(betelgeuse_decl.rad)
 
     sirius_cos_decl = np.cos(sirius_decl.rad)
     sirius_sin_decl = np.sin(sirius_decl.rad)
 
-    cos_sra_bra = np.cos(sirius_ra.rad - betelguse_ra.rad)
-    sin_sra_bra = np.sin(sirius_ra.rad - betelguse_ra.rad)
+    cos_sra_bra = np.cos(sirius_ra.rad - betelgeuse_ra.rad)
+    sin_sra_bra = np.sin(sirius_ra.rad - betelgeuse_ra.rad)
 
     sin_d_sin_th = np.cos(sirius_decl.rad) * sin_sra_bra 
-    sin_d_cos_th = np.cos(betelguse_decl.rad) * np.sin(sirius_decl.rad) - betel_sin_decl * sirius_cos_decl * cos_sra_bra
+    sin_d_cos_th = np.cos(betelgeuse_decl.rad) * np.sin(sirius_decl.rad) - betel_sin_decl * sirius_cos_decl * cos_sra_bra
     cos_d = betel_sin_decl * sirius_sin_decl + betel_cos_decl * sirius_cos_decl * cos_sra_bra
 
     check = ((sin_d_sin_th)**2 +(sin_d_cos_th )**2 +(cos_d)** 2)
@@ -163,10 +176,10 @@ if __name__ == '__main__':
 
     #   Test001 function arc_distance().
     print "*** Test001 ****************"
-    betelguse = AstroObjectCoordinate('betelguse',betelguse_ra,betelguse_decl)
-    sirius  = AstroObjectCoordinate('sisius', sirius_ra, sirius_decl)
+    betelgeuse = AstroObjectCoordinate('betelgeuse',betelgeuse_ra,betelgeuse_decl)
+    sirius  = AstroObjectCoordinate('sirius', sirius_ra, sirius_decl)
 
-    (distance_degree, distance_radian, th_degree, th_radian) = arc_distance(betelguse, sirius)
+    (distance_degree, distance_radian, th_degree, th_radian) = arc_distance(betelgeuse, sirius)
 
     print "arc distance[rad] =%f" % distance_radian
     print "arc distance[deg] =%f" % distance_degree
@@ -175,10 +188,10 @@ if __name__ == '__main__':
 
     #   Test002 function arc_distance().
     print "*** Test002 ****************"
-    betelguse = AstroObjectCoordinate('betelguse', RA(+5, 52, 30), DECL(+7, 24, 00))
-    sirius    = AstroObjectCoordinate('sisius', RA(+6, 42, 54), DECL(-16, 39, 00))
+    betelgeuse = AstroObjectCoordinate('Betelgeuse', RA(+5, 52, 30), DECL(+7, 24, 00))
+    sirius    = AstroObjectCoordinate('Sirius', RA(+6, 42, 54), DECL(-16, 39, 00))
 
-    (distance_degree, distance_radian, th_degree, th_radian) = arc_distance(betelguse, sirius)
+    (distance_degree, distance_radian, th_degree, th_radian) = arc_distance(betelgeuse, sirius)
 
     print "arc distance[rad] =%f" % distance_radian
     print "arc distance[deg] =%f" % distance_degree
