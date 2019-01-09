@@ -1,5 +1,7 @@
 #! /usr/bin/env python 
 """ 
+In private repository.
+
 This program calculate the distance between two astro
     object in degrees.
 
